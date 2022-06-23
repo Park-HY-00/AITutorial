@@ -76,3 +76,25 @@ model.summary()
 """ Learning """
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 hist = model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(X_test, y_test))
+
+""" Check the loss / accuracy """
+score = model.evaluate(X_test, y_test, verbose=0)
+print('Test loss: ', score[0])
+print('Test accuracy: ', score[1])
+
+y_vloss = hist.history['val_loss']
+y_loss = hist.history['loss']
+x_len = np.arange(len(y_loss))
+plt.plot(x_len, y_vloss, marker='.', c='red', label='Testset_loss')
+plt.plot(x_len, y_loss, marker='.', c='blue', label='Trainset_loss')
+plt.legend(loc='upper right')
+plt.grid()
+plt.xlabel('epochs')
+plt.ylabel('loss')
+plt.show()
+
+""" Check the prediction """
+n = 0
+plt.imshow(X_test[n].reshape(28, 28), cmap='Greys', interpolation='nearest')
+plt.show()
+print('The Answer is ', model.predict(X_test[n].reshape((1, 28, 28, 1))))   # 결과값 출력해야함
